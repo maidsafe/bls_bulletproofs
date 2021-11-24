@@ -67,16 +67,6 @@ impl GeneratorsChain {
         let rng = ChaCha20Rng::from_seed(sha3.finalize().into());
         GeneratorsChain { rng }
     }
-
-    /// Advances the reader n times, squeezing and discarding
-    /// the result.
-    fn fast_forward(mut self, n: usize) -> Self {
-        for _ in 0..n {
-            let mut buf = [0u8; 64];
-            self.rng.fill_bytes(&mut buf);
-        }
-        self
-    }
 }
 
 impl Default for GeneratorsChain {
@@ -183,14 +173,14 @@ impl BulletproofGens {
             LittleEndian::write_u32(&mut label[1..5], party_index);
             self.G_vec[i].extend(
                 &mut GeneratorsChain::new(&label)
-                    .fast_forward(self.gens_capacity)
+                    .skip(self.gens_capacity)
                     .take(new_capacity - self.gens_capacity),
             );
 
             label[0] = b'H';
             self.H_vec[i].extend(
                 &mut GeneratorsChain::new(&label)
-                    .fast_forward(self.gens_capacity)
+                    .skip(self.gens_capacity)
                     .take(new_capacity - self.gens_capacity),
             );
         }
@@ -289,8 +279,8 @@ mod tests {
         let gens = BulletproofGens::new(64, 8);
 
         let helper = |n: usize, m: usize| {
-            let agg_G: Vec<G1Affine> = gens.G(n, m).cloned().collect();
-            let flat_G: Vec<G1Affine> = gens
+            let agg_G: Vec<G1Projective> = gens.G(n, m).cloned().collect();
+            let flat_G: Vec<G1Projective> = gens
                 .G_vec
                 .iter()
                 .take(m)
@@ -298,8 +288,8 @@ mod tests {
                 .cloned()
                 .collect();
 
-            let agg_H: Vec<G1Affine> = gens.H(n, m).cloned().collect();
-            let flat_H: Vec<G1Affine> = gens
+            let agg_H: Vec<G1Projective> = gens.H(n, m).cloned().collect();
+            let flat_H: Vec<G1Projective> = gens
                 .H_vec
                 .iter()
                 .take(m)
@@ -333,11 +323,11 @@ mod tests {
         gen_resized.increase_capacity(64);
 
         let helper = |n: usize, m: usize| {
-            let gens_G: Vec<G1Affine> = gens.G(n, m).cloned().collect();
-            let gens_H: Vec<G1Affine> = gens.H(n, m).cloned().collect();
+            let gens_G: Vec<G1Projective> = gens.G(n, m).cloned().collect();
+            let gens_H: Vec<G1Projective> = gens.H(n, m).cloned().collect();
 
-            let resized_G: Vec<G1Affine> = gen_resized.G(n, m).cloned().collect();
-            let resized_H: Vec<G1Affine> = gen_resized.H(n, m).cloned().collect();
+            let resized_G: Vec<G1Projective> = gen_resized.G(n, m).cloned().collect();
+            let resized_H: Vec<G1Projective> = gen_resized.H(n, m).cloned().collect();
 
             assert_eq!(gens_G, resized_G);
             assert_eq!(gens_H, resized_H);

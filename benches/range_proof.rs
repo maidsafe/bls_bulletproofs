@@ -6,7 +6,7 @@ use criterion::Criterion;
 use rand;
 use rand::Rng;
 
-use curve25519_dalek::scalar::Scalar;
+use blstrs::{group::ff::Field, Scalar};
 
 use merlin::Transcript;
 

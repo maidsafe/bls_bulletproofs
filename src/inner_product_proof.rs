@@ -321,7 +321,7 @@ impl InnerProductProof {
     /// For vectors of length `n` the proof size is
     /// \\(32 \cdot (2\lg n+2)\\) bytes.
     pub fn serialized_size(&self) -> usize {
-        (self.L_vec.len() * 2 + 2) * 32
+        (self.L_vec.len() * 2) * 48 + 2 * 32
     }
 
     /// Serializes the proof into a byte array of \\(2n+2\\) 32-byte elements.
@@ -361,16 +361,16 @@ impl InnerProductProof {
 
     /// Deserializes the proof from a byte slice.
     /// Returns an error in the following cases:
-    /// * the slice does not have \\(2n+2\\) 32-byte elements,
+    /// * the slice does not have \\(2n\\) 48-byte elements + 2 32-byte elements,
     /// * \\(n\\) is larger or equal to 32 (proof is too big),
-    /// * any of \\(2n\\) points are not valid compressed Ristretto points,
-    /// * any of 2 scalars are not canonical scalars modulo Ristretto group order.
+    /// * any of \\(2n\\) points are not valid compressed bls12-381 G1 points,
+    /// * any of 2 scalars are not canonical scalars modulo bls12-381 G1 group order.
     pub fn from_bytes(slice: &[u8]) -> Result<InnerProductProof, ProofError> {
         let b = slice.len();
         if b < 2 * 32 {
             return Err(ProofError::FormatError);
         }
-        if b - 32 * 2 % 48 != 0 {
+        if (b - 32 * 2) % 48 != 0 {
             // last two elements are scalars,
             return Err(ProofError::FormatError);
         }
@@ -379,7 +379,7 @@ impl InnerProductProof {
             return Err(ProofError::FormatError);
         }
 
-        let lg_n = num_points;
+        let lg_n = num_points / 2;
         if lg_n >= 32 {
             return Err(ProofError::FormatError);
         }
@@ -395,7 +395,7 @@ impl InnerProductProof {
                     .ok_or(ProofError::FormatError)?,
             );
             R_vec.push(
-                Option::from(G1Projective::from_compressed(&read48(&slice[pos + 32..])))
+                Option::from(G1Projective::from_compressed(&read48(&slice[pos + 48..])))
                     .ok_or(ProofError::FormatError)?,
             );
         }
@@ -431,18 +431,17 @@ mod tests {
     use super::*;
 
     use crate::util;
-    use sha3::Sha3_512;
 
     fn test_helper_create(n: usize) {
         let mut rng = rand::thread_rng();
 
         use crate::generators::BulletproofGens;
         let bp_gens = BulletproofGens::new(n, 1);
-        let G: Vec<RistrettoPoint> = bp_gens.share(0).G(n).cloned().collect();
-        let H: Vec<RistrettoPoint> = bp_gens.share(0).H(n).cloned().collect();
+        let G: Vec<G1Projective> = bp_gens.share(0).G(n).cloned().collect();
+        let H: Vec<G1Projective> = bp_gens.share(0).H(n).cloned().collect();
 
         // Q would be determined upstream in the protocol, so we pick a random one.
-        let Q = RistrettoPoint::hash_from_bytes::<Sha3_512>(b"test point");
+        let Q = G1Projective::hash_to_curve(b"test point", b"tests", &[]);
 
         // a and b are the vectors for which we want to prove c = <a,b>
         let a: Vec<_> = (0..n).map(|_| Scalar::random(&mut rng)).collect();
@@ -464,10 +463,12 @@ mod tests {
         // a.iter() has Item=&Scalar, need Item=Scalar to chain with b_prime
         let a_prime = a.iter().cloned();
 
-        let P = RistrettoPoint::vartime_multiscalar_mul(
-            a_prime.chain(b_prime).chain(iter::once(c)),
-            G.iter().chain(H.iter()).chain(iter::once(&Q)),
-        );
+        let P: G1Projective = a_prime
+            .chain(b_prime)
+            .chain(iter::once(c))
+            .zip(G.iter().chain(H.iter()).chain(iter::once(&Q)))
+            .map(|(a, P)| P * a)
+            .sum();
 
         let mut verifier = Transcript::new(b"innerproducttest");
         let proof = InnerProductProof::create(
@@ -479,7 +480,8 @@ mod tests {
             H.clone(),
             a.clone(),
             b.clone(),
-        );
+        )
+        .unwrap();
 
         let mut verifier = Transcript::new(b"innerproducttest");
         assert!(proof

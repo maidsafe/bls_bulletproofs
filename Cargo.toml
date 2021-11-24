@@ -59,7 +59,6 @@ required-features = ["yoloproofs"]
 [[bench]]
 name = "range_proof"
 harness = false
-required-features = ["avx2_backend"]
 
 [[bench]]
 name = "generators"
@@ -68,4 +67,4 @@ harness = false
 [[bench]]
 name = "r1cs"
 harness = false
-required-features = ["yoloproofs", "avx2_backend"]
+required-features = ["yoloproofs"]
