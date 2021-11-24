@@ -355,15 +355,12 @@ impl RangeProof {
 
         // First, replay the "interactive" protocol using the proof
         // data to recompute all challenges.
-        println!("v1");
         if !(n == 8 || n == 16 || n == 32 || n == 64) {
             return Err(ProofError::InvalidBitsize);
         }
-        println!("v2");
         if bp_gens.gens_capacity < n {
             return Err(ProofError::InvalidGeneratorsLength);
         }
-        println!("v3");
         if bp_gens.party_capacity < m {
             return Err(ProofError::InvalidGeneratorsLength);
         }
@@ -376,9 +373,7 @@ impl RangeProof {
             transcript.append_point(b"V", V);
         }
 
-        println!("v4");
         transcript.validate_and_append_point(b"A", &self.A.into())?;
-        println!("v5");
         transcript.validate_and_append_point(b"S", &self.S.into())?;
 
         let y = transcript.challenge_scalar(b"y");
@@ -386,9 +381,7 @@ impl RangeProof {
         let zz = z * z;
         let minus_z = -z;
 
-        println!("v6");
         transcript.validate_and_append_point(b"T_1", &self.T_1.into())?;
-        println!("v7");
         transcript.validate_and_append_point(b"T_2", &self.T_2.into())?;
 
         let x = transcript.challenge_scalar(b"x");
@@ -402,7 +395,6 @@ impl RangeProof {
         // Challenge value for batching statements to be verified
         let c = Scalar::random(rng);
 
-        println!("v8");
         let (x_sq, x_inv_sq, s) = self.ipp_proof.verification_scalars(n * m, transcript)?;
         let s_inv = s.iter().rev();
 
@@ -525,36 +517,27 @@ impl RangeProof {
 
         use crate::util::{read32, read48};
 
-        println!("1");
         let A = Option::from(G1Affine::from_compressed(&read48(&slice[0 * 48..])))
             .ok_or(ProofError::FormatError)?;
-        println!("2");
         let S = Option::from(G1Affine::from_compressed(&read48(&slice[1 * 48..])))
             .ok_or(ProofError::FormatError)?;
-        println!("3");
         let T_1 = Option::from(G1Affine::from_compressed(&read48(&slice[2 * 48..])))
             .ok_or(ProofError::FormatError)?;
-        println!("4");
         let T_2 = Option::from(G1Affine::from_compressed(&read48(&slice[3 * 48..])))
             .ok_or(ProofError::FormatError)?;
 
-        println!("5");
         let t_x = Option::from(Scalar::from_bytes_le(&read32(&slice[4 * 48 + 0 * 32..])))
             .ok_or(ProofError::FormatError)?;
 
-        println!("6");
         let t_x_blinding =
             Option::from(Scalar::from_bytes_le(&read32(&slice[(4 * 48 + 1 * 32)..])))
                 .ok_or(ProofError::FormatError)?;
 
-        println!("7");
         let e_blinding = Option::from(Scalar::from_bytes_le(&read32(&slice[4 * 48 + 2 * 32..])))
             .ok_or(ProofError::FormatError)?;
 
-        println!("8");
         let ipp_proof = InnerProductProof::from_bytes(&slice[4 * 48 + 3 * 32..])?;
 
-        println!("9");
         Ok(RangeProof {
             A,
             S,
