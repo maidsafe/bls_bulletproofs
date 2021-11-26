@@ -326,7 +326,11 @@ impl<'a, 'b> DealerAwaitingProofShares<'a, 'b> {
     ) -> Result<RangeProof, ProofError> {
         let proof = self.assemble_shares(proof_shares)?;
 
-        let Vs: Vec<_> = self.bit_commitments.iter().map(|vc| vc.V_j).collect();
+        let Vs: Vec<_> = self
+            .bit_commitments
+            .iter()
+            .map(|vc| vc.V_j.to_affine())
+            .collect();
 
         // See comment in `Dealer::new` for why we use `initial_transcript`
         let transcript = &mut self.initial_transcript;

@@ -9,7 +9,7 @@ extern crate rand;
 use self::rand::thread_rng;
 use alloc::vec::Vec;
 use blstrs::group::ff::Field;
-use blstrs::group::Group;
+use blstrs::group::{Curve, Group};
 
 use core::iter;
 
@@ -140,7 +140,7 @@ impl RangeProof {
         v_blinding: &Scalar,
         n: usize,
         rng: &mut T,
-    ) -> Result<(RangeProof, G1Projective), ProofError> {
+    ) -> Result<(RangeProof, G1Affine), ProofError> {
         let (p, Vs) = RangeProof::prove_multiple_with_rng(
             bp_gens,
             pc_gens,
@@ -165,7 +165,7 @@ impl RangeProof {
         v: u64,
         v_blinding: &Scalar,
         n: usize,
-    ) -> Result<(RangeProof, G1Projective), ProofError> {
+    ) -> Result<(RangeProof, G1Affine), ProofError> {
         RangeProof::prove_single_with_rng(
             bp_gens,
             pc_gens,
@@ -239,7 +239,7 @@ impl RangeProof {
         blindings: &[Scalar],
         n: usize,
         mut rng: impl RngCore + CryptoRng,
-    ) -> Result<(RangeProof, Vec<G1Projective>), ProofError> {
+    ) -> Result<(RangeProof, Vec<G1Affine>), ProofError> {
         use self::dealer::*;
         use self::party::*;
 
@@ -265,7 +265,7 @@ impl RangeProof {
             })
             .unzip();
 
-        let value_commitments: Vec<_> = bit_commitments.iter().map(|c| c.V_j).collect();
+        let value_commitments: Vec<_> = bit_commitments.iter().map(|c| c.V_j.to_affine()).collect();
 
         let (dealer, bit_challenge) = dealer.receive_bit_commitments(bit_commitments)?;
 
@@ -298,7 +298,7 @@ impl RangeProof {
         values: &[u64],
         blindings: &[Scalar],
         n: usize,
-    ) -> Result<(RangeProof, Vec<G1Projective>), ProofError> {
+    ) -> Result<(RangeProof, Vec<G1Affine>), ProofError> {
         RangeProof::prove_multiple_with_rng(
             bp_gens,
             pc_gens,
@@ -318,7 +318,7 @@ impl RangeProof {
         bp_gens: &BulletproofGens,
         pc_gens: &PedersenGens,
         transcript: &mut Transcript,
-        V: &G1Projective, // This might need to be G1Affine
+        V: &G1Affine,
         n: usize,
         rng: &mut T,
     ) -> Result<(), ProofError> {
@@ -335,7 +335,7 @@ impl RangeProof {
         bp_gens: &BulletproofGens,
         pc_gens: &PedersenGens,
         transcript: &mut Transcript,
-        V: &G1Projective, // This might need to be G1Affine
+        V: &G1Affine,
         n: usize,
     ) -> Result<(), ProofError> {
         self.verify_single_with_rng(bp_gens, pc_gens, transcript, V, n, &mut thread_rng())
@@ -347,10 +347,15 @@ impl RangeProof {
         bp_gens: &BulletproofGens,
         pc_gens: &PedersenGens,
         transcript: &mut Transcript,
-        value_commitments: &[G1Projective],
+        value_commitments: &[G1Affine],
         n: usize,
         rng: &mut T,
     ) -> Result<(), ProofError> {
+        let value_commitments: Vec<G1Projective> = value_commitments
+            .iter()
+            .map(|c| G1Projective::from(c))
+            .collect();
+
         let m = value_commitments.len();
 
         // First, replay the "interactive" protocol using the proof
@@ -463,7 +468,7 @@ impl RangeProof {
         bp_gens: &BulletproofGens,
         pc_gens: &PedersenGens,
         transcript: &mut Transcript,
-        value_commitments: &[G1Projective],
+        value_commitments: &[G1Affine],
         n: usize,
     ) -> Result<(), ProofError> {
         self.verify_multiple_with_rng(

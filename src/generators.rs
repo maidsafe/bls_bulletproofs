@@ -9,9 +9,11 @@ extern crate alloc;
 use alloc::vec::Vec;
 use blstrs::{group::Group, G1Projective, Scalar};
 use digest::Digest;
-use rand::{RngCore, SeedableRng};
+use rand::SeedableRng;
 use rand_chacha::ChaCha20Rng;
 use sha3::Sha3_256;
+
+const PED_GEN_DOMAIN: &[u8; 20] = b"bulletproofs-ped-gen";
 
 /// Represents a pair of base points for Pedersen commitments.
 ///
@@ -42,9 +44,21 @@ impl PedersenGens {
 
 impl Default for PedersenGens {
     fn default() -> Self {
-        let B = G1Projective::generator();
-        let B_blinding =
-            G1Projective::hash_to_curve(&B.to_compressed(), b"bulletproofs-ped-gen", &[]);
+        // NOTE: this is changed from zkcrypto/bulletproofs
+        //
+        //       upstream uses
+        //         value * G + blinding * H
+        //
+        //       we need to flip this like so:
+        //         blinding * G + value * H
+        //
+        //       This done to get commitments to zero working in ringct:
+        //         (b1 * G + 10 * H) - (b2 * G + 10 * H) = (b1 - b2) * G
+        //
+        //       You can prove a commitment to zero by signing with the secret key (b1 - b2)
+
+        let B_blinding = G1Projective::generator();
+        let B = G1Projective::hash_to_curve(&B_blinding.to_compressed(), PED_GEN_DOMAIN, &[]);
         PedersenGens { B, B_blinding }
     }
 }
