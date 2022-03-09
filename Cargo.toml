@@ -19,7 +19,7 @@ edition = "2018"
 [dependencies]
 blstrs = { git = "https://github.com/davidrusu/blstrs.git", branch="bulletproofs-fixes" }
 # curve25519-dalek = { package = "curve25519-dalek-ng", version = "4", default-features = false, features = ["u64_backend", "serde"] }
-subtle = { package = "subtle-ng", version = "2.4", default-features = false }
+subtle = { version = "2.4.1", default-features = false }
 sha3 = { version = "0.9.1", default-features = false }
 rand_chacha = "0.3" # used as a seedable rng in GeneratorsxChain
 digest = { version = "0.9.0", default-features = false }
