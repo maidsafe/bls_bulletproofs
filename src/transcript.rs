@@ -1,10 +1,8 @@
 //! Defines a `TranscriptProtocol` trait for using a Merlin transcript.
 
-use blstrs::{
-    group::{ff::Field, Group},
-    G1Projective, Scalar,
-};
+use blstrs::{G1Projective, Scalar};
 use digest::Digest;
+use group::{ff::Field, Group};
 use merlin::Transcript;
 use rand::SeedableRng;
 use rand_chacha::ChaCha20Rng;

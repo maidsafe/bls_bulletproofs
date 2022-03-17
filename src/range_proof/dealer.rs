@@ -10,9 +10,9 @@ extern crate alloc;
 
 use alloc::vec::Vec;
 
-use blstrs::group::ff::Field;
-use blstrs::group::Curve;
 use blstrs::{G1Projective, Scalar};
+use group::ff::Field;
+use group::Curve;
 use merlin::Transcript;
 
 use crate::errors::MPCError;
@@ -243,9 +243,19 @@ impl<'a, 'b> DealerAwaitingProofShares<'a, 'b> {
             return Err(MPCError::MalformedProofShares { bad_shares }.into());
         }
 
-        let t_x: Scalar = proof_shares.iter().map(|ps| ps.t_x).sum();
-        let t_x_blinding: Scalar = proof_shares.iter().map(|ps| ps.t_x_blinding).sum();
-        let e_blinding: Scalar = proof_shares.iter().map(|ps| ps.e_blinding).sum();
+        // todo: replace fold() with sum() when supported in blstrs
+        let t_x: Scalar = proof_shares
+            .iter()
+            .map(|ps| ps.t_x)
+            .fold(Scalar::zero(), |sum, x| sum + x);
+        let t_x_blinding: Scalar = proof_shares
+            .iter()
+            .map(|ps| ps.t_x_blinding)
+            .fold(Scalar::zero(), |sum, x| sum + x);
+        let e_blinding: Scalar = proof_shares
+            .iter()
+            .map(|ps| ps.e_blinding)
+            .fold(Scalar::zero(), |sum, x| sum + x);
 
         self.transcript.append_scalar(b"t_x", &t_x);
         self.transcript

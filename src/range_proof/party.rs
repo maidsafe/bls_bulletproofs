@@ -13,10 +13,10 @@
 extern crate alloc;
 
 use alloc::vec::Vec;
-use blstrs::group::ff::Field;
 use blstrs::{G1Projective, Scalar};
 use clear_on_drop::clear::Clear;
 use core::iter;
+use group::ff::Field;
 use rand_core::{CryptoRng, RngCore};
 
 use crate::errors::MPCError;

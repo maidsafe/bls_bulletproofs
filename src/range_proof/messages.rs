@@ -7,11 +7,9 @@
 extern crate alloc;
 
 use alloc::vec::Vec;
-use blstrs::{
-    group::{ff::Field, Group},
-    G1Projective, Scalar,
-};
+use blstrs::{G1Projective, Scalar};
 use core::iter;
+use group::{ff::Field, Group};
 
 use crate::generators::{BulletproofGens, PedersenGens};
 
