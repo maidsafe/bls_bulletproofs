@@ -1,4 +1,4 @@
-use rand_core::SeedableRng;
+use rand::SeedableRng;
 
 use rand_chacha::ChaChaRng;
 

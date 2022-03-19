@@ -35,7 +35,6 @@ pub use blstrs;
 pub use group;
 pub use merlin;
 pub use rand;
-pub use rand_core;
 
 pub use crate::errors::ProofError;
 pub use crate::generators::{BulletproofGens, BulletproofGensShare, PedersenGens};

@@ -17,7 +17,7 @@ use blstrs::{G1Projective, Scalar};
 use clear_on_drop::clear::Clear;
 use core::iter;
 use group::ff::Field;
-use rand_core::{CryptoRng, RngCore};
+use rand::{CryptoRng, RngCore};
 
 use crate::errors::MPCError;
 use crate::generators::{BulletproofGens, PedersenGens};

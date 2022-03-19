@@ -22,8 +22,7 @@ subtle = { version = "2.4.1", default-features = false }
 sha3 = { version = "0.9.1", default-features = false }
 rand_chacha = "0.3" # used as a seedable rng in GeneratorsxChain
 digest = { version = "0.9.0", default-features = false }
-rand_core = { version = "0.6", default-features = false, features = ["alloc"] }
-rand = { version = "0.8", default-features = false, optional = true }
+rand = "0.8.5"
 byteorder = { version = "1", default-features = false }
 serde = { version = "1", default-features = false, features = ["alloc"] }
 serde_derive = { version = "1", default-features = false }
@@ -41,7 +40,7 @@ rand_chacha = "0.3"
 [features]
 default = ["std"]
 yoloproofs = []
-std = ["rand", "rand/std", "rand/std_rng", "thiserror"]
+std = ["thiserror"]
 nightly = ["subtle/nightly", "clear_on_drop/nightly"]
 docs = ["nightly"]
 

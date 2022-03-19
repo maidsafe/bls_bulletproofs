@@ -21,7 +21,7 @@ use crate::range_proof::RangeProof;
 use crate::transcript::TranscriptProtocol;
 use crate::{inner_product_proof, ProofError};
 
-use rand_core::{CryptoRng, RngCore};
+use rand::{CryptoRng, RngCore};
 
 use crate::util;
 
