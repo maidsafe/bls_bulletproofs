@@ -30,6 +30,12 @@ mod inner_product_proof;
 mod range_proof;
 mod transcript;
 
+// re-export crates that are used in our public API.
+pub use blstrs;
+pub use group;
+pub use merlin;
+pub use rand;
+
 pub use crate::errors::ProofError;
 pub use crate::generators::{BulletproofGens, BulletproofGensShare, PedersenGens};
 pub use crate::range_proof::RangeProof;

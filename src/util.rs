@@ -5,9 +5,9 @@ extern crate alloc;
 
 use alloc::vec;
 use alloc::vec::Vec;
-use blstrs::group::ff::Field;
 use blstrs::Scalar;
 use clear_on_drop::clear::Clear;
+use group::ff::Field;
 
 use crate::inner_product_proof::inner_product;
 
@@ -258,7 +258,8 @@ pub fn sum_of_powers(x: &Scalar, n: usize) -> Scalar {
 
 // takes the sum of all of the powers of x, up to n
 fn sum_of_powers_slow(x: &Scalar, n: usize) -> Scalar {
-    exp_iter(*x).take(n).sum()
+    // todo: replace fold() with sum() when supported in blstrs
+    exp_iter(*x).take(n).fold(Scalar::zero(), |sum, x| sum + x)
 }
 
 /// Given `data` with `len >= 32`, return the first 32 bytes.

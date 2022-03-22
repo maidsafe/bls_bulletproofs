@@ -8,8 +8,8 @@ extern crate rand;
 #[cfg(feature = "std")]
 use self::rand::thread_rng;
 use alloc::vec::Vec;
-use blstrs::group::ff::Field;
-use blstrs::group::{Curve, Group};
+use group::ff::Field;
+use group::{Curve, Group};
 
 use core::iter;
 
@@ -22,7 +22,7 @@ use crate::inner_product_proof::InnerProductProof;
 use crate::transcript::TranscriptProtocol;
 use crate::util;
 
-use rand_core::{CryptoRng, RngCore};
+use rand::{CryptoRng, RngCore};
 use serde::de::Visitor;
 use serde::{self, Deserialize, Deserializer, Serialize, Serializer};
 
@@ -86,7 +86,8 @@ impl RangeProof {
     /// use rand::thread_rng;
     ///
     /// extern crate blstrs;
-    /// use blstrs::{group::ff::Field, Scalar};
+    /// use group::ff::Field;
+    /// use blstrs::Scalar;
     ///
     /// extern crate merlin;
     /// use merlin::Transcript;
@@ -185,7 +186,8 @@ impl RangeProof {
     /// use rand::thread_rng;
     ///
     /// extern crate blstrs;
-    /// use blstrs::{group::ff::Field, Scalar};
+    /// use group::ff::Field;
+    /// use blstrs::Scalar;
     ///
     /// extern crate merlin;
     /// use merlin::Transcript;

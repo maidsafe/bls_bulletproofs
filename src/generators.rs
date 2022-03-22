@@ -7,8 +7,9 @@
 extern crate alloc;
 
 use alloc::vec::Vec;
-use blstrs::{group::Group, G1Projective, Scalar};
+use blstrs::{G1Projective, Scalar};
 use digest::Digest;
+use group::Group;
 use rand::SeedableRng;
 use rand_chacha::ChaCha20Rng;
 use sha3::Sha3_256;

@@ -1,8 +1,10 @@
-use rand_core::SeedableRng;
+use rand::SeedableRng;
 
 use rand_chacha::ChaChaRng;
 
-use blstrs::{group::ff::Field, Scalar};
+use group::ff::Field;
+
+use blstrs::Scalar;
 
 use merlin::Transcript;
 

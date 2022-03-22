@@ -6,9 +6,9 @@ extern crate alloc;
 use alloc::borrow::Borrow;
 use alloc::vec::Vec;
 
-use blstrs::group::ff::Field;
 use blstrs::{G1Projective, Scalar};
 use core::iter;
+use group::ff::Field;
 use merlin::Transcript;
 
 use crate::errors::ProofError;
@@ -227,7 +227,10 @@ impl InnerProductProof {
             .into_iter()
             .map(|u| Option::from(u.invert()).ok_or(ProofError::FormatError))
             .collect::<Result<Vec<_>, _>>()?;
-        let allinv = challenges_inv.iter().product();
+        // todo: replace fold() with product() when supported in blstrs
+        let allinv = challenges_inv
+            .iter()
+            .fold(Scalar::one(), |product, x| product * x);
 
         // 3. Compute u_i^2 and (1/u_i)^2
 
@@ -328,6 +331,7 @@ impl InnerProductProof {
     /// The layout of the inner product proof is:
     /// * \\(n\\) pairs of compressed Ristretto points \\(L_0, R_0 \dots, L_{n-1}, R_{n-1}\\),
     /// * two scalars \\(a, b\\).
+    #[allow(dead_code)]
     pub fn to_bytes(&self) -> Vec<u8> {
         let mut buf = Vec::with_capacity(self.serialized_size());
         for (l, r) in self.L_vec.iter().zip(self.R_vec.iter()) {
