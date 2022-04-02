@@ -6,8 +6,10 @@ use alloc::vec::Vec;
 #[cfg(feature = "std")]
 use thiserror::Error;
 
+use serde::{Deserialize, Serialize};
+
 /// Represents an error in proof creation, verification, or parsing.
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[cfg_attr(feature = "std", derive(Error))]
 pub enum ProofError {
     /// This error occurs when a proof failed to verify.
@@ -65,7 +67,7 @@ impl From<MPCError> for ProofError {
 /// API: although the MPC protocol is used internally for single-party
 /// proving, its API should not expose the complexity of the MPC
 /// protocol.
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[cfg_attr(feature = "std", derive(Error))]
 pub enum MPCError {
     /// This error occurs when the dealer gives a zero challenge,
