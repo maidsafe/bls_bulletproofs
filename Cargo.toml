@@ -1,16 +1,16 @@
 [package]
-name = "bulletproofs"
+name = "sn_bulletproofs"
 # Before doing a release:
 # - update version field 
 # - update html_root_url
 # - update CHANGELOG
-version = "4.0.0"
+version = "0.0.1"
 authors = ["Cathie Yun <cathieyun@gmail.com>", 
            "Henry de Valence <hdevalence@hdevalence.ca>",
            "Oleg Andreev <oleganza@gmail.com>"]
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/zkcrypto/bulletproofs"
+repository = "https://github.com/maidsafe/sn-bulletproofs"
 categories = ["cryptography"]
 keywords = ["cryptography", "crypto", "ristretto", "zero-knowledge", "bulletproofs"]
 description = "A pure-Rust implementation of Bulletproofs using Ristretto"
