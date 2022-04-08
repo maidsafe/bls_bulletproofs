@@ -1,16 +1,12 @@
 [package]
-name = "sn_bulletproofs"
-# Before doing a release:
-# - update version field 
-# - update html_root_url
-# - update CHANGELOG
+name = "bls_bulletproofs"
 version = "0.1.0"
 authors = ["Cathie Yun <cathieyun@gmail.com>", 
            "Henry de Valence <hdevalence@hdevalence.ca>",
            "Oleg Andreev <oleganza@gmail.com>"]
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/maidsafe/sn_bulletproofs"
+repository = "https://github.com/maidsafe/bls_bulletproofs"
 categories = ["cryptography"]
 keywords = ["cryptography", "crypto", "ristretto", "zero-knowledge", "bulletproofs"]
 description = "A pure-Rust implementation of Bulletproofs using Ristretto"
@@ -43,7 +39,6 @@ yoloproofs = []
 std = ["thiserror"]
 nightly = ["subtle/nightly", "clear_on_drop/nightly"]
 docs = ["nightly"]
-
 
 [[test]]
 name = "range_proof"
