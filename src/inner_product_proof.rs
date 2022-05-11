@@ -14,7 +14,7 @@ use merlin::Transcript;
 use crate::errors::ProofError;
 use crate::transcript::TranscriptProtocol;
 
-#[derive(Clone, Debug)]
+#[derive(Eq, PartialEq, Clone, Debug)]
 pub struct InnerProductProof {
     pub(crate) L_vec: Vec<G1Projective>,
     pub(crate) R_vec: Vec<G1Projective>,

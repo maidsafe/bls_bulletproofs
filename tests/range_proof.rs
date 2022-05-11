@@ -8,7 +8,7 @@ use blstrs::Scalar;
 
 use merlin::Transcript;
 
-use bulletproofs::{BulletproofGens, PedersenGens, RangeProof};
+use bls_bulletproofs::{BulletproofGens, PedersenGens, RangeProof};
 
 use hex;
 

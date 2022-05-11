@@ -6,12 +6,11 @@ use criterion::Criterion;
 use rand;
 use rand::Rng;
 
-use blstrs::{group::ff::Field, Scalar};
+use blstrs::Scalar;
 
 use merlin::Transcript;
 
-use bulletproofs::RangeProof;
-use bulletproofs::{BulletproofGens, PedersenGens};
+use bls_bulletproofs::{group::ff::Field, BulletproofGens, PedersenGens, RangeProof};
 
 static AGGREGATION_SIZES: [usize; 6] = [1, 2, 4, 8, 16, 32];
 
