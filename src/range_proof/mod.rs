@@ -55,7 +55,7 @@ pub mod party;
 /// protocol locally.  That API is exposed in the [`aggregation`](::range_proof_mpc)
 /// module and can be used to perform online aggregation between
 /// parties without revealing secret values to each other.
-#[derive(Clone, Debug)]
+#[derive(Eq, PartialEq, Clone, Debug)]
 pub struct RangeProof {
     /// Commitment to the bits of the value
     A: G1Affine,
@@ -92,8 +92,8 @@ impl RangeProof {
     /// extern crate merlin;
     /// use merlin::Transcript;
     ///
-    /// extern crate bulletproofs;
-    /// use bulletproofs::{BulletproofGens, PedersenGens, RangeProof};
+    /// extern crate bls_bulletproofs;
+    /// use bls_bulletproofs::{BulletproofGens, PedersenGens, RangeProof};
     ///
     /// # fn main() {
     /// // Generators for Pedersen commitments.  These can be selected
@@ -192,8 +192,8 @@ impl RangeProof {
     /// extern crate merlin;
     /// use merlin::Transcript;
     ///
-    /// extern crate bulletproofs;
-    /// use bulletproofs::{BulletproofGens, PedersenGens, RangeProof};
+    /// extern crate bls_bulletproofs;
+    /// use bls_bulletproofs::{BulletproofGens, PedersenGens, RangeProof};
     ///
     /// # fn main() {
     /// // Generators for Pedersen commitments.  These can be selected
