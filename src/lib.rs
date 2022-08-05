@@ -1,3 +1,9 @@
+// Copyright (c) 2022, MaidSafe.
+// All rights reserved.
+//
+// This SAFE Network Software is licensed under the MIT license.
+// Please see the LICENSE file for more details.
+
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(feature = "docs", feature(external_doc))]
 #![cfg_attr(feature = "docs", deny(missing_docs))]

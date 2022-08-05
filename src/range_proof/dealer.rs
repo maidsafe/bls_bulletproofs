@@ -1,3 +1,9 @@
+// Copyright (c) 2022, MaidSafe.
+// All rights reserved.
+//
+// This SAFE Network Software is licensed under the MIT license.
+// Please see the LICENSE file for more details.
+
 //! The `dealer` module contains the API for the dealer state while the dealer is
 //! engaging in an aggregated multiparty computation protocol.
 //!

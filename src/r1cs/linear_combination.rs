@@ -1,3 +1,9 @@
+// Copyright (c) 2022, MaidSafe.
+// All rights reserved.
+//
+// This SAFE Network Software is licensed under the MIT license.
+// Please see the LICENSE file for more details.
+
 //! Definition of linear combinations.
 
 use curve25519_dalek::scalar::Scalar;

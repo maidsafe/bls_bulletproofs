@@ -1,3 +1,9 @@
+// Copyright (c) 2022, MaidSafe.
+// All rights reserved.
+//
+// This SAFE Network Software is licensed under the MIT license.
+// Please see the LICENSE file for more details.
+
 //! Errors related to proving and verifying proofs.
 
 extern crate alloc;

@@ -11,7 +11,7 @@ env:
 jobs:
   checks:
     if: "!startsWith(github.event.pull_request.title, 'Automated version bump')"
-    name: fmt & clippy
+    name: Checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -32,6 +32,7 @@ jobs:
           key: ${{ runner.os }}-cargo-cache-${{ hashFiles('**/Cargo.lock') }}
       - name: Check formatting
         run: cargo fmt --all -- --check
+      # Re-enable when all the clippy warnings have been fixed.
       #- name: Clippy checks
         #run: cargo clippy --all-targets
       - name: install ripgrep
@@ -97,6 +98,7 @@ jobs:
       - name: Run cargo test
         run: cargo test --release
   
+  # Re-enable when warnings regarding the use of a deprecated function have been fixed.
   #cargo-udeps:
     #if: "!startsWith(github.event.pull_request.title, 'Automated version bump')"
     #name: Unused dependency check

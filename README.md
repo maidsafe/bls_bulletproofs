@@ -207,3 +207,9 @@ developed by Henry de Valence, Cathie Yun, and Oleg Andreev.
 [gh_repo]: https://github.com/dalek-cryptography/bulletproofs/
 [gh_milestones]: https://github.com/dalek-cryptography/bulletproofs/milestones
 [interstellar]: https://interstellar.com/
+
+## License
+
+This repository is licensed under the MIT license.
+
+See the [LICENSE](LICENSE) file for more details.
