@@ -1,6 +1,13 @@
 # Changelog
 
-Entries are listed in reverse chronological order.
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## 1.1.0 (2022-08-24)
+
+
+### Features
+
+* [de-]serialize Error ([23cca44](https://github.com/maidsafe/bls_bulletproofs/commit/23cca44906ec5e03a475c3939c3a234c848ada34))
 
 ## 0.2.0
 
