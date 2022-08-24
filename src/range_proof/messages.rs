@@ -1,3 +1,9 @@
+// Copyright (c) 2022, MaidSafe.
+// All rights reserved.
+//
+// This SAFE Network Software is licensed under the MIT license.
+// Please see the LICENSE file for more details.
+
 //! The `messages` module contains the API for the messages passed between the parties and the dealer
 //! in an aggregated multiparty computation protocol.
 //!
