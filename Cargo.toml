@@ -13,7 +13,7 @@ description = "A pure-Rust implementation of Bulletproofs using Ristretto"
 edition = "2018"
 
 [dependencies]
-blstrs = "0.4.2"
+blstrs = "0.6.1"
 subtle = { version = "2.4.1", default-features = false }
 sha3 = { version = "0.9.1", default-features = false }
 rand_chacha = "0.3" # used as a seedable rng in GeneratorsxChain
@@ -25,7 +25,7 @@ serde_derive = { version = "1", default-features = false }
 thiserror = { version = "1", optional = true }
 merlin = { version = "3", default-features = false }
 clear_on_drop = { version = "0.2", default-features = false }
-group = "0.11.0"
+group = "0.12.0"
 
 [dev-dependencies]
 hex = "0.3"
