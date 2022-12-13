@@ -1,6 +1,6 @@
 [package]
 name = "bls_bulletproofs"
-version = "1.1.0"
+version = "1.1.1"
 authors = ["Cathie Yun <cathieyun@gmail.com>",
            "Henry de Valence <hdevalence@hdevalence.ca>",
            "Oleg Andreev <oleganza@gmail.com>"]
